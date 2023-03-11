@@ -14,6 +14,7 @@ public class AudioSender {
     boolean stop = false;
 
     public void start() {
+        stop = false;
         try {
             // Initialize the audio capture
             AudioFormat format = new AudioFormat(44100, 16, 2, true, true);
@@ -45,5 +46,9 @@ public class AudioSender {
 
     public void stopThread() {
         stop = !stop;
+        microphone.close();
+        microphone.stop();
+        socket = null;
+
     }
 }

@@ -143,6 +143,8 @@ public class Server extends Application {
 
     Double dist;
 
+    boolean conv = false;
+
 
 
 
@@ -1065,13 +1067,21 @@ public class Server extends Application {
                         break;
                     case "w":
                         out.println("w");
+                        conv = true;
                         senderThread.start();
                         receiverThread.start();
                         break;
                     case "x":
                         out.println("x");
-                        sender.stopThread();
-                        receiver.stopThread();
+                        if(conv == true) {
+                            sender.stopThread();
+                            receiver.stopThread();
+                            conv = false;
+                        } else if (conv == false) {
+                            sender.start();
+                            receiver.start();
+                            conv = true;
+                        }
 
                         break;
                 }

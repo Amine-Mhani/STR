@@ -9,16 +9,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class AudioReceiver {
-    private SourceDataLine speakers;
-    private ServerSocket serverSocket;
-    private Socket socket;
+    SourceDataLine speakers;
+    ServerSocket serverSocket;
+    Socket socket;
 
     boolean stop = false;
 
 
 
     public void start() {
-
+        stop = false;
         try {
 
             // Initialize the audio playback
@@ -51,6 +51,8 @@ public class AudioReceiver {
 
     public void stopThread() {
         stop = !stop;
-
+        speakers.close();
+        speakers.stop();
+        serverSocket = null;
     }
 }
