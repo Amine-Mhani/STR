@@ -24,7 +24,7 @@ public class AudioSender {
             microphone.start();
 
             // Establish the socket connection
-            String host = "192.168.1.106";
+            String host = "localhost";
             int port = 8000;
             socket = new Socket(host, port);
 

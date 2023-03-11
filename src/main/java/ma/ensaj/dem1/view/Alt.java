@@ -984,10 +984,10 @@ public class Alt extends Application {
                         Timeline timeline = new Timeline();
                         if(dist>-75 && dist<-60){
                             if(pl.getImage() == plane3) {
-                                //refuelPlayer.play();
+                                refuelPlayer.play();
                                 //lev.setText(String.valueOf(5000));
 
-                                refuelPlayer.stop();
+                                //refuelPlayer.stop();
                                 for (double i = 0.0; i <= 5000.0; i+=0.5) {
                                     double value = i;
                                     KeyFrame keyFrame = new KeyFrame(DURATION.multiply(i),
