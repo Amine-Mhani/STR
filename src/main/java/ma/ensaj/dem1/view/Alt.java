@@ -82,6 +82,7 @@ public class Alt extends Application {
     private static final int CENTER_Y = HEIGHT / 2;
     private static final int TICK_LENGTH = 10;
     private static final int TEXT_PADDING = 1;
+    private static final Duration DURATION = Duration.millis(0.7);
 
     private static final int Translation = 400;
 
@@ -100,13 +101,16 @@ public class Alt extends Application {
 
     String autoPilotAudioFile = "autopilot.wav";
     String manualFile = "manual.wav";
+    String refuellingFile = "fuel.wav";
 
 
     Media autoPilot = new Media(new File(autoPilotAudioFile).toURI().toString());
     Media manual = new Media(new File(manualFile).toURI().toString());
+    Media refuel = new Media(new File(refuellingFile).toURI().toString());
 
     MediaPlayer autoPilotPlayer = new MediaPlayer(autoPilot);
     MediaPlayer manualPlayer = new MediaPlayer(manual);
+    MediaPlayer refuelPlayer = new MediaPlayer(refuel);
 
     ScrollPane scp = createScrollPane(createImageView(split));
 
@@ -120,6 +124,8 @@ public class Alt extends Application {
 
     Line nee, nee2;
     Radar radar = new Radar();
+
+
 
     Double dist;
 
@@ -345,10 +351,14 @@ public class Alt extends Application {
         VBox nd = new VBox();
         nd.getChildren().add(createNd());
 
+        Group comp = radar.start();
+
         VBox rad = new VBox();
-        rad.getChildren().add(radar.start());
+        rad.getChildren().add(comp);
         //rad.setStyle("-fx-padding: 30");
         rad.setPadding(new Insets(30, 0, 0, 0));
+
+        Circle own = (Circle) comp.getChildren().get(8).lookup("#own");
 
 
 
@@ -396,6 +406,8 @@ public class Alt extends Application {
 
         root.setStyle("-fx-background-color: transparent; -fx-padding: 10px;");
 
+
+
         monitored.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -420,10 +432,15 @@ public class Alt extends Application {
                 double dy = event.getScreenY() - plTopLeftOnScreen.getY();
                 distance = Math.sqrt(dx * dx + dy * dy) - 218;
                 dist = distance;
-
+                System.out.println("distance: "+distance);
                 //System.out.println("dx : "+dx+", dy : "+dy);
 
                 if (distance < 200) {
+                    if(dx>0){
+                        own.setTranslateY(30);
+                    }else if(dx<0){
+                        own.setTranslateY(-30);
+                    }
 
                     //warning.play();
                     translate.setToY(120);
@@ -431,7 +448,26 @@ public class Alt extends Application {
                     otherAircraft.setFill(Color.RED);
                     //scene.setFill(Color.RED);
 
+                } else if (distance < 300) {
+                    if(dx>0){
+                        own.setTranslateY(60);
+                    }else if(dx<0){
+                        own.setTranslateY(-60);
+                    }
+
+                }else if (distance < 400) {
+                    if(dx>0){
+                        own.setTranslateY(90);
+                    }else if(dx<0){
+                        own.setTranslateY(-90);
+                    }
+
                 } else if (distance < 500) {
+                    if(dx>0){
+                        own.setTranslateY(120);
+                    }else if(dx<0){
+                        own.setTranslateY(-120);
+                    }
 
                     //warning.stop();
                     translate.setToY(50);
@@ -440,6 +476,11 @@ public class Alt extends Application {
                     otherAircraft.setFill(Color.YELLOW);
                     //scene.setFill(Color.BLACK);
                 } else {
+                    if(dx>0){
+                        own.setTranslateY(150);
+                    }else if(dx<0){
+                        own.setTranslateY(-150);
+                    }
 
                     //warning.stop();
                     translate.setToY(0);
@@ -448,6 +489,8 @@ public class Alt extends Application {
                     otherAircraft.setFill(Color.GREEN);
                     //scene.setFill(Color.BLACK);
                 }
+
+
 
                 if(!((needHeat1.getRotate()+10)>180)) {
                     Timeline timeline = new Timeline(
@@ -936,14 +979,36 @@ public class Alt extends Application {
                         }
 
                         break;
+                    case F:
+                        System.out.println("F clicked");
+                        Timeline timeline = new Timeline();
+                        if(dist>-75 && dist<-60){
+                            if(pl.getImage() == plane3) {
+                                //refuelPlayer.play();
+                                //lev.setText(String.valueOf(5000));
+
+                                refuelPlayer.stop();
+                                for (double i = 0.0; i <= 5000.0; i+=0.5) {
+                                    double value = i;
+                                    KeyFrame keyFrame = new KeyFrame(DURATION.multiply(i),
+                                            event2 -> lev.setText(String.valueOf(value)));
+                                    timeline.getKeyFrames().add(keyFrame);
+                                }
+                                timeline.play();
+                            }
+                        }
+                        break;
                     case W:
                         System.out.println("la distance est : "+dist);
+own.setTranslateY(-150);
+                        System.out.println(own);
                     default:
                         break;
                 }
 
             }
         });
+
 
         scene.setFill(Color.BLACK);
 

@@ -65,7 +65,8 @@ public class Radar{
 
         map.setOpacity(0.1);
 
-        Circle ownAircraft = new Circle(90, 50, 5, Color.LIMEGREEN);
+        Circle ownAircraft = new Circle(150, 150, 5, Color.LIMEGREEN);
+        ownAircraft.setId("own");
 
         Arc arc = new Arc(150, 150, 150, 150, 0, 30);
         RadialGradient gradient = new RadialGradient(90, 0, 0.3, 0.3, 2, true,
