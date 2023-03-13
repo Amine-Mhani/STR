@@ -443,9 +443,9 @@ public class Client extends Application {
                 //System.out.println("dx : "+dx+", dy : "+dy);
 
                 if (distance < 200) {
-                    if(dx>0){
+                    if(dx<0){
                         own.setTranslateY(30);
-                    }else if(dx<0){
+                    }else if(dx>0){
                         own.setTranslateY(-30);
                     }
 
@@ -456,23 +456,23 @@ public class Client extends Application {
                     //scene.setFill(Color.RED);
 
                 } else if (distance < 300) {
-                    if(dx>0){
+                    if(dx<0){
                         own.setTranslateY(60);
-                    }else if(dx<0){
+                    }else if(dx>0){
                         own.setTranslateY(-60);
                     }
 
                 }else if (distance < 400) {
-                    if(dx>0){
+                    if(dx<0){
                         own.setTranslateY(90);
-                    }else if(dx<0){
+                    }else if(dx>0){
                         own.setTranslateY(-90);
                     }
 
                 } else if (distance < 500) {
-                    if(dx>0){
+                    if(dx<0){
                         own.setTranslateY(120);
-                    }else if(dx<0){
+                    }else if(dx>0){
                         own.setTranslateY(-120);
                     }
 
@@ -483,9 +483,9 @@ public class Client extends Application {
                     otherAircraft.setFill(Color.YELLOW);
                     //scene.setFill(Color.BLACK);
                 } else {
-                    if(dx>0){
+                    if(dx<0){
                         own.setTranslateY(150);
-                    }else if(dx<0){
+                    }else if(dx>0){
                         own.setTranslateY(-150);
                     }
 
@@ -1045,7 +1045,19 @@ public class Client extends Application {
 
         stage.setScene(scene);
         stage.setFullScreen(true);
-        //mediaPlayer.play();
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
+
+        mediaPlayer.statusProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == MediaPlayer.Status.STOPPED) {
+                mediaPlayer.play();
+            }
+        });
+
+        mediaPlayer.play();
+        stage.show();
         stage.show();
 
     }

@@ -561,7 +561,7 @@ public class Server extends Application {
                         lin4.setStroke(Color.RED);
                         cir4.setStroke(Color.RED);
 
-                        //warning.play();
+                        warning.play();
                     }else if(needHeat1.getRotate()+1>110){
                         lin3.setStroke(Color.YELLOW);
                         cir3.setStroke(Color.YELLOW);
@@ -574,6 +574,9 @@ public class Server extends Application {
                         cir3.setStroke(Color.GREEN);
                         lin4.setStroke(Color.GREEN);
                         cir4.setStroke(Color.GREEN);
+
+                        warning.stop();
+
                     }
 
                 }
@@ -621,7 +624,7 @@ public class Server extends Application {
                             lin2.setStroke(Color.RED);
                             cir2.setStroke(Color.RED);
 
-                            //warning.play();
+                            warning.play();
                         }else if(needPerc1.getRotate()+20>100){
                             lin1.setStroke(Color.YELLOW);
                             cir1.setStroke(Color.YELLOW);
@@ -634,6 +637,7 @@ public class Server extends Application {
                             cir1.setStroke(Color.GREEN);
                             lin2.setStroke(Color.GREEN);
                             cir2.setStroke(Color.GREEN);
+                            warning.stop();
                         }
 
 
@@ -662,7 +666,7 @@ public class Server extends Application {
                             lin2.setStroke(Color.RED);
                             cir2.setStroke(Color.RED);
 
-                            //warning.play();
+                            warning.play();
                         }else if(needPerc1.getRotate()-20>100){
                             lin1.setStroke(Color.YELLOW);
                             cir1.setStroke(Color.YELLOW);
@@ -675,7 +679,7 @@ public class Server extends Application {
                             cir1.setStroke(Color.GREEN);
                             lin2.setStroke(Color.GREEN);
                             cir2.setStroke(Color.GREEN);
-
+                            warning.stop();
                         }
                     }
                 } else if (mouseEvent.getButton() == MouseButton.MIDDLE) {
@@ -695,6 +699,8 @@ public class Server extends Application {
 
                     heat1.setText("82");
                     heat2.setText("82");
+
+                    warning.stop();
                 }
             }
         });
@@ -1092,6 +1098,19 @@ public class Server extends Application {
         stage.setScene(scene);
         stage.setFullScreen(true);
         //mediaPlayer.play();
+        //mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
+
+        mediaPlayer.statusProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == MediaPlayer.Status.STOPPED) {
+                mediaPlayer.play();
+            }
+        });
+
+        mediaPlayer.play();
         stage.show();
 
 
