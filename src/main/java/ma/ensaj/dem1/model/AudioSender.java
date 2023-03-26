@@ -24,20 +24,21 @@ public class AudioSender {
             microphone.start();
 
             // Establish the socket connection
-            String host = "localhost";
+            String host = "128.10.3.224";
             int port = 8000;
             socket = new Socket(host, port);
 
             // Send the audio data
             OutputStream out = socket.getOutputStream();
             byte[] buffer = new byte[4096];
-            outerloop:
-            while (!stop) {
+
+            while (true) {
+                System.out.println("sender working");
                 int count = microphone.read(buffer, 0, buffer.length);
                 if (count > 0) {
                     out.write(buffer, 0, count);
                 }
-                continue outerloop;
+
             }
         } catch (Exception e) {
             e.printStackTrace();

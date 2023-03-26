@@ -47,6 +47,15 @@ public class Client extends Application {
     private static final String OUTSIDE_TEXT = "Outside Label";
     double delta = 0.07;
 
+    Image safeup = new Image("safeup.png");
+    Image safedown = new Image("safedown.png");
+    Image warnup = new Image("warnup.png");
+    Image warndown = new Image("warndown.png");
+    Image dangerup = new Image("dangerup.png");
+    Image dangerdown = new Image("dangerdown.png");
+
+    ImageView tcim = new ImageView(safeup);
+
     Image ndpic = new Image("nd.png");
 
     Image jet = new Image("jet.png");
@@ -115,7 +124,9 @@ public class Client extends Application {
 
     ScrollPane scp = createScrollPane(createImageView(split));
 
-    private Circle otherAircraft = new Circle(400, 150, 5, Color.GREEN);
+    //private Circle otherAircraft = new Circle(400, 150, 5, Color.GREEN);
+
+    private ImageView otherAircraft = tcim;
 
     Node needPerc1, needPerc2, needHeat1, needHeat2;
 
@@ -241,6 +252,10 @@ public class Client extends Application {
 
         Group tcas = createTCAS();
         tcas.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-min-width: 500");
+        otherAircraft.setScaleX(0.04);
+        otherAircraft.setScaleY(0.04);
+        otherAircraft.setTranslateX(-140);
+        otherAircraft.setTranslateY(-100);
         tcas.getChildren().add(otherAircraft);
 
 
@@ -436,7 +451,7 @@ public class Client extends Application {
 
                 Point2D plTopLeftOnScreen = pl.localToScreen(0, 0);
                 double dx = event.getScreenX() - plTopLeftOnScreen.getX();
-                double dy = event.getScreenY() - plTopLeftOnScreen.getY();
+                double dy = event.getScreenY() - plTopLeftOnScreen.getY() - 100;
                 distance = Math.sqrt(dx * dx + dy * dy) - 218;
                 dist = distance;
                 System.out.println("distance: "+distance);
@@ -450,9 +465,13 @@ public class Client extends Application {
                     }
 
                     //warning.play();
-                    translate.setToY(120);
+                    translate.setToY(10);
                     translate.play();
-                    otherAircraft.setFill(Color.RED);
+                    if(dy>0){
+                        otherAircraft.setImage(dangerup);
+                    }else if(dy<0){
+                        otherAircraft.setImage(dangerdown);
+                    }
                     //scene.setFill(Color.RED);
 
                 } else if (distance < 300) {
@@ -477,10 +496,14 @@ public class Client extends Application {
                     }
 
                     //warning.stop();
-                    translate.setToY(50);
+                    translate.setToY(-35);
                     translate.play();
 
-                    otherAircraft.setFill(Color.YELLOW);
+                    if(dy>0){
+                        otherAircraft.setImage(warnup);
+                    }else if(dy<0){
+                        otherAircraft.setImage(warndown);
+                    }
                     //scene.setFill(Color.BLACK);
                 } else {
                     if(dx<0){
@@ -490,10 +513,15 @@ public class Client extends Application {
                     }
 
                     //warning.stop();
-                    translate.setToY(0);
+                    translate.setToY(-100);
                     translate.play();
 
-                    otherAircraft.setFill(Color.GREEN);
+
+                    if(dy>0){
+                        otherAircraft.setImage(safeup);
+                    }else if(dy<0){
+                        otherAircraft.setImage(safedown);
+                    }
                     //scene.setFill(Color.BLACK);
                 }
 

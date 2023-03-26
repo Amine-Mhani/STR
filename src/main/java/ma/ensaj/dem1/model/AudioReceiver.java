@@ -36,13 +36,14 @@ public class AudioReceiver {
             // Receive the audio data
             InputStream in = socket.getInputStream();
             byte[] buffer = new byte[4096];
-            outerloop:
-            while (!stop) {
+
+            while (true) {
+                System.out.println("receiver working");
                 int count = in.read(buffer, 0, buffer.length);
                 if (count > 0) {
                     speakers.write(buffer, 0, count);
                 }
-                continue outerloop;
+
             }
         } catch (Exception e) {
             e.printStackTrace();
