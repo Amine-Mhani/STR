@@ -75,7 +75,8 @@ public class Client extends Application {
     String filePath = "Airplane+8.mp3";
     String filePath2 = "warning.mp3";
 
-    Media media = new Media(new File(filePath).toURI().toString());
+    String fly = "fly.mp3";
+    Media media = new Media(new File(fly).toURI().toString());
     Media media2 = new Media(new File(filePath2).toURI().toString());
     Media media3 = new Media(new File(filePath2).toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -694,6 +695,9 @@ public class Client extends Application {
                     case G:
                         isAuto = !isAuto;
                         //System.out.println("switch to manual");
+                        out.println("g");
+
+                        event.consume();
 
                         manualPlayer.play();
 
@@ -707,6 +711,9 @@ public class Client extends Application {
                         isAuto = !isAuto;
                         //System.out.println("switch to auto ");
                         animateScrollPaneVvalue(scrollPane, 0.5);
+                        out.println("g");
+
+                        event.consume();
                         autoPilotPlayer.play();
                         break;
                     case UP:

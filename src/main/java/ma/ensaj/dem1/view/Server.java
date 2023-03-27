@@ -6,9 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.event.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -86,9 +84,12 @@ public class Server extends Application {
     Image split = new Image("pfd4.jpg");
     Image indic = new Image("wing8.png");
     String filePath = "Airplane+8.mp3";
+    String fly = "fly.mp3";
     String filePath2 = "warning.mp3";
 
-    Media media = new Media(new File(filePath).toURI().toString());
+
+
+    Media media = new Media(new File(fly).toURI().toString());
     Media media2 = new Media(new File(filePath2).toURI().toString());
     Media media3 = new Media(new File(filePath2).toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -589,21 +590,21 @@ public class Server extends Application {
                         lin4.setStroke(Color.RED);
                         cir4.setStroke(Color.RED);
 
-                        warning.play();
+                        heat.play();
                     }else if(needHeat1.getRotate()+1>110){
                         lin3.setStroke(Color.YELLOW);
                         cir3.setStroke(Color.YELLOW);
                         lin4.setStroke(Color.YELLOW);
                         cir4.setStroke(Color.YELLOW);
 
-                        warning.stop();
+                        heat.stop();
                     }else{
                         lin3.setStroke(Color.GREEN);
                         cir3.setStroke(Color.GREEN);
                         lin4.setStroke(Color.GREEN);
                         cir4.setStroke(Color.GREEN);
 
-                        warning.stop();
+                        heat.stop();
 
                     }
 
@@ -652,20 +653,20 @@ public class Server extends Application {
                             lin2.setStroke(Color.RED);
                             cir2.setStroke(Color.RED);
 
-                            warning.play();
+                            speed.play();
                         }else if(needPerc1.getRotate()+20>100){
                             lin1.setStroke(Color.YELLOW);
                             cir1.setStroke(Color.YELLOW);
                             lin2.setStroke(Color.YELLOW);
                             cir2.setStroke(Color.YELLOW);
 
-                            warning.stop();
+                            speed.stop();
                         }else{
                             lin1.setStroke(Color.GREEN);
                             cir1.setStroke(Color.GREEN);
                             lin2.setStroke(Color.GREEN);
                             cir2.setStroke(Color.GREEN);
-                            warning.stop();
+                            speed.stop();
                         }
 
 
@@ -694,20 +695,20 @@ public class Server extends Application {
                             lin2.setStroke(Color.RED);
                             cir2.setStroke(Color.RED);
 
-                            warning.play();
+                            speed.play();
                         }else if(needPerc1.getRotate()-20>100){
                             lin1.setStroke(Color.YELLOW);
                             cir1.setStroke(Color.YELLOW);
                             lin2.setStroke(Color.YELLOW);
                             cir2.setStroke(Color.YELLOW);
 
-                            warning.stop();
+                            speed.stop();
                         }else {
                             lin1.setStroke(Color.GREEN);
                             cir1.setStroke(Color.GREEN);
                             lin2.setStroke(Color.GREEN);
                             cir2.setStroke(Color.GREEN);
-                            warning.stop();
+                            speed.stop();
                         }
                     }
                 } else if (mouseEvent.getButton() == MouseButton.MIDDLE) {
@@ -728,7 +729,7 @@ public class Server extends Application {
                     heat1.setText("82");
                     heat2.setText("82");
 
-                    warning.stop();
+                    heat.stop();
                 }
             }
         });
@@ -743,7 +744,7 @@ public class Server extends Application {
                     case G:
                         isAuto = !isAuto;
                         //System.out.println("switch to manual");
-
+                        monitored.setMouseTransparent(false);
                         manualPlayer.play();
 
                         break;
@@ -756,6 +757,8 @@ public class Server extends Application {
                         isAuto = !isAuto;
                         //System.out.println("switch to auto ");
                         animateScrollPaneVvalue(scrollPane, 0.5);
+                        monitored.setMouseTransparent(true);
+
                         autoPilotPlayer.play();
                         break;
                     case UP:
@@ -1105,6 +1108,12 @@ public class Server extends Application {
                         senderThread.start();
                         receiverThread.start();
                         break;
+                    case "g":
+                        out.println("g");
+                        conv = true;
+                        senderThread.start();
+                        receiverThread.start();
+                        break;
                     case "x":
                         out.println("x");
                         if(conv == true) {
@@ -1129,7 +1138,7 @@ public class Server extends Application {
         stage.setFullScreen(true);
         //mediaPlayer.play();
         //mediaPlayer.setAutoPlay(true);
-        /**mediaPlayer.setOnEndOfMedia(() -> {
+        mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
         });
@@ -1140,7 +1149,7 @@ public class Server extends Application {
             }
         });
 
-        mediaPlayer.play();*/
+        mediaPlayer.play();
         stage.show();
 
 

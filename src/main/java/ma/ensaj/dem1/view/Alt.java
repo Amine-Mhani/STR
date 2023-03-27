@@ -359,10 +359,15 @@ public class Alt extends Application {
         heat2.setText("82");
 
 
-
+        VBox comen = new VBox();
+        comen.setStyle("-fx-border-color: red");
+        Label ment = new Label("the commentary");
+        ment.setTextFill(Color.WHITE);
+        comen.getChildren().add(ment);
 
 
         Group pane = new Group(scale1, N1, scale22, scale3, EGT, scale4);
+        pane.setStyle("-fx-border-color: red");
 
 
 
